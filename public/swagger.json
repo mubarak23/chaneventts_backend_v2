@@ -1,0 +1,613 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"FileCloudProviders": {
+				"enum": [
+					"CLOUDINARY"
+				],
+				"type": "string"
+			},
+			"ICloudFile": {
+				"properties": {
+					"keyFromCloudProvider": {
+						"type": "string"
+					},
+					"url": {
+						"type": "string"
+					},
+					"mimetype": {
+						"type": "string"
+					},
+					"fileCloudProvider": {
+						"$ref": "#/components/schemas/FileCloudProviders"
+					}
+				},
+				"required": [
+					"keyFromCloudProvider",
+					"url",
+					"mimetype",
+					"fileCloudProvider"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IProfile": {
+				"properties": {
+					"userUuid": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"phoneNumber": {
+						"type": "string"
+					},
+					"emailAddress": {
+						"type": "string"
+					},
+					"photo": {
+						"$ref": "#/components/schemas/ICloudFile"
+					}
+				},
+				"required": [
+					"userUuid",
+					"firstName",
+					"lastName",
+					"phoneNumber",
+					"emailAddress",
+					"photo"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"DetailedError": {
+				"properties": {
+					"message": {
+						"type": "string"
+					},
+					"standardizedErrorCode": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"message",
+					"standardizedErrorCode"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IServerResponse_IProfile_": {
+				"properties": {
+					"status": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IProfile"
+					},
+					"error": {
+						"type": "string"
+					},
+					"errors": {
+						"items": {
+							"$ref": "#/components/schemas/DetailedError"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAccessTokenData": {
+				"properties": {
+					"token": {
+						"type": "string"
+					},
+					"refreshToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"token",
+					"refreshToken"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IServerResponse_IAccessTokenData_": {
+				"properties": {
+					"status": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IAccessTokenData"
+					},
+					"error": {
+						"type": "string"
+					},
+					"errors": {
+						"items": {
+							"$ref": "#/components/schemas/DetailedError"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IAgentSignupDto": {
+				"properties": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"emailAddress": {
+						"type": "string"
+					},
+					"phoneNumber": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"firstName",
+					"lastName",
+					"emailAddress",
+					"phoneNumber",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ILoginDto": {
+				"properties": {
+					"emailAddress": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"emailAddress",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TicketStatuses": {
+				"enum": [
+					"CREATED",
+					"IN_PROGRESS",
+					"CLOSED"
+				],
+				"type": "string"
+			},
+			"TicketResponseDto": {
+				"properties": {
+					"uuid": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"customerEmail": {
+						"type": "string"
+					},
+					"agentProfile": {
+						"$ref": "#/components/schemas/IProfile"
+					},
+					"status": {
+						"$ref": "#/components/schemas/TicketStatuses"
+					},
+					"images": {
+						"items": {
+							"properties": {
+								"mimetype": {
+									"type": "string"
+								},
+								"url": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"mimetype",
+								"url"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"uuid",
+					"name",
+					"description",
+					"customerEmail",
+					"agentProfile",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPaginatedList_TicketResponseDto_": {
+				"properties": {
+					"pageNumber": {
+						"type": "number",
+						"format": "double"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					},
+					"pageSize": {
+						"type": "number",
+						"format": "double"
+					},
+					"dataset": {
+						"items": {
+							"$ref": "#/components/schemas/TicketResponseDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"pageNumber",
+					"total",
+					"pageSize",
+					"dataset"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IServerResponse_IPaginatedList_TicketResponseDto__": {
+				"properties": {
+					"status": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {
+						"$ref": "#/components/schemas/IPaginatedList_TicketResponseDto_"
+					},
+					"error": {
+						"type": "string"
+					},
+					"errors": {
+						"items": {
+							"$ref": "#/components/schemas/DetailedError"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SortOrder": {
+				"enum": [
+					"ASC",
+					"DESC"
+				],
+				"type": "string"
+			},
+			"IServerResponse_void_": {
+				"properties": {
+					"status": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"data": {},
+					"error": {
+						"type": "string"
+					},
+					"errors": {
+						"items": {
+							"$ref": "#/components/schemas/DetailedError"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"INewTicketDto": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"customerEmail": {
+						"type": "string"
+					},
+					"userUuid": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"description",
+					"customerEmail",
+					"userUuid"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"jwt": {
+				"type": "apiKey",
+				"name": "x-access-token",
+				"in": "header"
+			}
+		}
+	},
+	"info": {
+		"title": "chaineventts-backend",
+		"version": "1.0.0",
+		"description": "Chaineventts Service Backend",
+		"contact": {
+			"name": "Mubarak Aminu"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/api/agent/profile": {
+			"get": {
+				"operationId": "AgentProfile",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IServerResponse_IProfile_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Agent Service"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/auth/agent/signup": {
+			"post": {
+				"operationId": "AgentSignup",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IServerResponse_IAccessTokenData_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth Service"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IAgentSignupDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/auth/agent/signin": {
+			"post": {
+				"operationId": "AgentSignin",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IServerResponse_IAccessTokenData_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Auth Service"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ILoginDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/ticket/all": {
+			"get": {
+				"operationId": "Tickets",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IServerResponse_IPaginatedList_TicketResponseDto__"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Ticket Service"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "pageNumber",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "sortOrder",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/SortOrder"
+						}
+					},
+					{
+						"in": "query",
+						"name": "status",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/TicketStatuses"
+						}
+					}
+				]
+			}
+		},
+		"/api/ticket/new": {
+			"post": {
+				"operationId": "HandleNewTicket",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IServerResponse_void_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Ticket Service"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/INewTicketDto"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/ticket/updateTicket/{ticketUuid}/{newTicketStatus}": {
+			"put": {
+				"operationId": "HandleUpdateTicketStatus",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IServerResponse_void_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Ticket Service"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "ticketUuid",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "newTicketStatus",
+						"required": true,
+						"schema": {
+							"$ref": "#/components/schemas/TicketStatuses"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
