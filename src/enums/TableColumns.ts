@@ -13,6 +13,25 @@ export enum SavedProductColumns {
   PRODUCT_ID = "product_id",
 }
 
+export enum EventColumns {
+  UUID = "event_uuid",
+  NAME = "name",
+  DESCRIPTION = "description",
+  LOCATION = "location",
+  EVENT_OWNER = "event_owner",
+  EVENT_EMAIL = "event_email",
+  EVENT_ONCHAIN_ID = "event_onchain_id",
+  REQUIRED_APPROVAL = "required_approval",
+  OPEN_FOR_REGISTRATION = "open_for_registration",
+  EVENT_CAPACITY = "event_capacity",
+  TICKET = "ticket",
+  EVENT_TYPE = "event_type",
+  EVENT_MODE = "event_mode",
+  TICKET_AMOUNT = "ticket_amount",
+  EVENT_START_DATE = "event_start_date",
+  EVENT_END_DATE = "event_end_date",
+  EVENT_IMAGE = "event_image",
+}
 
 
 export enum UserColumns {
