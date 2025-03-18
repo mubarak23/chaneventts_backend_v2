@@ -3,11 +3,7 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AgentController } from './controllers/AgentController';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AuthController } from './controllers/AuthController';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { TicketController } from './controllers/TicketController';
+import { EventsController } from './controllers/EventController';
 import { expressAuthentication } from './authentication';
 // @ts-ignore - no great way to install types from subpackage
 const promiseAny = require('promise.any');
@@ -16,35 +12,6 @@ import * as express from 'express';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "FileCloudProviders": {
-        "dataType": "refEnum",
-        "enums": ["CLOUDINARY"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ICloudFile": {
-        "dataType": "refObject",
-        "properties": {
-            "keyFromCloudProvider": {"dataType":"string","required":true},
-            "url": {"dataType":"string","required":true},
-            "mimetype": {"dataType":"string","required":true},
-            "fileCloudProvider": {"ref":"FileCloudProviders","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IProfile": {
-        "dataType": "refObject",
-        "properties": {
-            "userUuid": {"dataType":"string","required":true},
-            "firstName": {"dataType":"string","required":true},
-            "lastName": {"dataType":"string","required":true},
-            "phoneNumber": {"dataType":"string","required":true},
-            "emailAddress": {"dataType":"string","required":true},
-            "photo": {"ref":"ICloudFile","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "DetailedError": {
         "dataType": "refObject",
         "properties": {
@@ -54,126 +21,31 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IServerResponse_IProfile_": {
+    "IServerResponse_any_": {
         "dataType": "refObject",
         "properties": {
             "status": {"dataType":"boolean","required":true},
             "message": {"dataType":"string"},
-            "data": {"ref":"IProfile"},
+            "data": {"dataType":"any"},
             "error": {"dataType":"string"},
             "errors": {"dataType":"array","array":{"dataType":"refObject","ref":"DetailedError"}},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IAccessTokenData": {
-        "dataType": "refObject",
-        "properties": {
-            "token": {"dataType":"string","required":true},
-            "refreshToken": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IServerResponse_IAccessTokenData_": {
-        "dataType": "refObject",
-        "properties": {
-            "status": {"dataType":"boolean","required":true},
-            "message": {"dataType":"string"},
-            "data": {"ref":"IAccessTokenData"},
-            "error": {"dataType":"string"},
-            "errors": {"dataType":"array","array":{"dataType":"refObject","ref":"DetailedError"}},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IAgentSignupDto": {
-        "dataType": "refObject",
-        "properties": {
-            "firstName": {"dataType":"string","required":true},
-            "lastName": {"dataType":"string","required":true},
-            "emailAddress": {"dataType":"string","required":true},
-            "phoneNumber": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ILoginDto": {
-        "dataType": "refObject",
-        "properties": {
-            "emailAddress": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "TicketStatuses": {
-        "dataType": "refEnum",
-        "enums": ["CREATED","IN_PROGRESS","CLOSED"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "TicketResponseDto": {
-        "dataType": "refObject",
-        "properties": {
-            "uuid": {"dataType":"string","required":true},
-            "name": {"dataType":"string","required":true},
-            "description": {"dataType":"string","required":true},
-            "customerEmail": {"dataType":"string","required":true},
-            "agentProfile": {"ref":"IProfile","required":true},
-            "status": {"ref":"TicketStatuses","required":true},
-            "images": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"mimetype":{"dataType":"string","required":true},"url":{"dataType":"string","required":true}}}},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IPaginatedList_TicketResponseDto_": {
-        "dataType": "refObject",
-        "properties": {
-            "pageNumber": {"dataType":"double","required":true},
-            "total": {"dataType":"double","required":true},
-            "pageSize": {"dataType":"double","required":true},
-            "dataset": {"dataType":"array","array":{"dataType":"refObject","ref":"TicketResponseDto"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IServerResponse_IPaginatedList_TicketResponseDto__": {
-        "dataType": "refObject",
-        "properties": {
-            "status": {"dataType":"boolean","required":true},
-            "message": {"dataType":"string"},
-            "data": {"ref":"IPaginatedList_TicketResponseDto_"},
-            "error": {"dataType":"string"},
-            "errors": {"dataType":"array","array":{"dataType":"refObject","ref":"DetailedError"}},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "SortOrder": {
-        "dataType": "refEnum",
-        "enums": ["ASC","DESC"],
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IServerResponse_void_": {
-        "dataType": "refObject",
-        "properties": {
-            "status": {"dataType":"boolean","required":true},
-            "message": {"dataType":"string"},
-            "data": {"dataType":"void"},
-            "error": {"dataType":"string"},
-            "errors": {"dataType":"array","array":{"dataType":"refObject","ref":"DetailedError"}},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "INewTicketDto": {
+    "IEventDto": {
         "dataType": "refObject",
         "properties": {
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
-            "customerEmail": {"dataType":"string","required":true},
-            "userUuid": {"dataType":"string","required":true},
+            "eventEmail": {"dataType":"string","required":true},
+            "location": {"dataType":"string","required":true},
+            "eventCapacity": {"dataType":"double","required":true},
+            "eventOwner": {"dataType":"string","required":true},
+            "eventOnchainId": {"dataType":"double","required":true},
+            "requiredApproval": {"dataType":"boolean","required":true},
+            "eventStartDate": {"dataType":"string","required":true},
+            "eventEndDate": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -188,12 +60,11 @@ export function RegisterRoutes(app: express.Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/api/agent/profile',
-            authenticateMiddleware([{"jwt":[]}]),
+        app.post('/api/event/create',
 
-            function AgentController_agentProfile(request: any, response: any, next: any) {
+            function EventsController_createEvent(request: any, response: any, next: any) {
             const args = {
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"IEventDto"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -202,132 +73,10 @@ export function RegisterRoutes(app: express.Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new AgentController();
+                const controller = new EventsController();
 
 
-              const promise = controller.agentProfile.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/auth/agent/signup',
-
-            function AuthController_agentSignup(request: any, response: any, next: any) {
-            const args = {
-                    reqBody: {"in":"body","name":"reqBody","required":true,"ref":"IAgentSignupDto"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new AuthController();
-
-
-              const promise = controller.agentSignup.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/auth/agent/signin',
-
-            function AuthController_agentSignin(request: any, response: any, next: any) {
-            const args = {
-                    reqBody: {"in":"body","name":"reqBody","required":true,"ref":"ILoginDto"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new AuthController();
-
-
-              const promise = controller.agentSignin.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/ticket/all',
-            authenticateMiddleware([{"jwt":[]}]),
-
-            function TicketController_tickets(request: any, response: any, next: any) {
-            const args = {
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
-                    pageNumber: {"in":"query","name":"pageNumber","required":true,"dataType":"any"},
-                    sortOrder: {"in":"query","name":"sortOrder","required":true,"ref":"SortOrder"},
-                    ticketStatus: {"in":"query","name":"status","required":true,"ref":"TicketStatuses"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new TicketController();
-
-
-              const promise = controller.tickets.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/ticket/new',
-
-            function TicketController_handleNewTicket(request: any, response: any, next: any) {
-            const args = {
-                    reqBody: {"in":"body","name":"reqBody","required":true,"ref":"INewTicketDto"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new TicketController();
-
-
-              const promise = controller.handleNewTicket.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/api/ticket/updateTicket/:ticketUuid/:newTicketStatus',
-            authenticateMiddleware([{"jwt":[]}]),
-
-            function TicketController_handleUpdateTicketStatus(request: any, response: any, next: any) {
-            const args = {
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
-                    ticketUuid: {"in":"path","name":"ticketUuid","required":true,"dataType":"string"},
-                    newTicketStatus: {"in":"path","name":"newTicketStatus","required":true,"ref":"TicketStatuses"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new TicketController();
-
-
-              const promise = controller.handleUpdateTicketStatus.apply(controller, validatedArgs as any);
+              const promise = controller.createEvent.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -337,65 +86,6 @@ export function RegisterRoutes(app: express.Router) {
 
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
-
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-    function authenticateMiddleware(security: TsoaRoute.Security[] = []) {
-        return async function runAuthenticationMiddleware(request: any, _response: any, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            // keep track of failed auth attempts so we can hand back the most
-            // recent one.  This behavior was previously existing so preserving it
-            // here
-            const failedAttempts: any[] = [];
-            const pushAndRethrow = (error: any) => {
-                failedAttempts.push(error);
-                throw error;
-            };
-
-            const secMethodOrPromises: Promise<any>[] = [];
-            for (const secMethod of security) {
-                if (Object.keys(secMethod).length > 1) {
-                    const secMethodAndPromises: Promise<any>[] = [];
-
-                    for (const name in secMethod) {
-                        secMethodAndPromises.push(
-                            expressAuthentication(request, name, secMethod[name])
-                                .catch(pushAndRethrow)
-                        );
-                    }
-
-                    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-                    secMethodOrPromises.push(Promise.all(secMethodAndPromises)
-                        .then(users => { return users[0]; }));
-                } else {
-                    for (const name in secMethod) {
-                        secMethodOrPromises.push(
-                            expressAuthentication(request, name, secMethod[name])
-                                .catch(pushAndRethrow)
-                        );
-                    }
-                }
-            }
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            try {
-                request['user'] = await promiseAny(secMethodOrPromises);
-                next();
-            }
-            catch(err) {
-                // Show most recent error as response
-                const error = failedAttempts.pop();
-                error.status = error.status || 401;
-                next(error);
-            }
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        }
-    }
 
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
