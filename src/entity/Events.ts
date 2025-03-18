@@ -61,7 +61,7 @@ export class Events extends DefualtEntity {
   @Column({ name: EventColumns.OPEN_FOR_REGISTRATION, nullable: true})
   openForRegistration: boolean;
 
- @Column({ name: EventColumns.EVENT_IMAGE, nullable: true})
+ @Column({  type:"jsonb", name: EventColumns.EVENT_IMAGE, nullable: true})
   eventImage: SimpleImageJson[]
 
 
