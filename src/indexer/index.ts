@@ -5,7 +5,8 @@ import {
 } from "@apibara/starknet";
 import { eventsIndexers } from "../enums/EventIndexer";
 import {
-  handleNewEventAdded
+  handleNewEventAdded,
+  handleRegisteredForEvent
   // handleEndEventRegistration, handleEventAttendanceMark, handleNewEventAdded,
   // handleRegisteredForEvent, handleRSVPForEvent
 } from "./handler";
@@ -24,7 +25,7 @@ const filter = Filter.create().withHeader({ weak: true });
 // Map your events to handlers
 const eventHandlers = {
   [eventsIndexers.NewEventAdded]: handleNewEventAdded,
-  // [eventsIndexers.RegisteredForEvent]: handleRegisteredForEvent,
+  [eventsIndexers.RegisteredForEvent]: handleRegisteredForEvent,
   // [eventsIndexers.EventAttendanceMark]: handleEventAttendanceMark,
   // [eventsIndexers.EndEventRegistration]: handleEndEventRegistration,
   // [eventsIndexers.RSVPForEvent]: handleRSVPForEvent,

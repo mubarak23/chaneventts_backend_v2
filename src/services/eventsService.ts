@@ -1,4 +1,5 @@
 import { getFreshConnection } from "../db";
+import { EventRegistration } from "../entity/EventRegistration";
 import { Events } from "../entity/Events";
 import { IEventData } from "../interfaces/IEventData";
 
@@ -76,4 +77,35 @@ export const createEventFromIndexer = async (payload: any): Promise<Events> => {
     throw error;
   }
 };
+
+export const registerforEventOnChain = async (payload: any): Promise<EventRegistration> => {
+  try {
+    const connection = await getFreshConnection();
+    const eventRegistrationRepo = connection.getRepository(EventRegistration);
+
+    const newEventRegistration = new EventRegistration();
+    newEventRegistration.initialize(
+      payload.eventId,
+      payload.emailAddress,
+      payload.userAddress,
+      true,
+    );
+    return await eventRegistrationRepo.save(newEventRegistration);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const hasUsserRegisteredforEvent = async (eventId: Number, userAddress: String): Promise<EventRegistration | null > => {
+    const connection = await getFreshConnection();
+    const eventRegistrationRepo = connection.getRepository(EventRegistration);
+    const event = await eventRegistrationRepo.findOne({
+      where: {eventId, userAddress}
+    })
+    if(!event){
+      return null;
+    }
+    return event
+  }
+
 

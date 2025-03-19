@@ -1,14 +1,11 @@
-import { FieldElement, v1alpha2 as starknet } from "@apibara/starknet";
+import { FieldElement } from "@apibara/starknet";
 import { uint256 } from "starknet";
-import * as EventsService from "../services/eventsService";
 import {
   NewEventAdded,
-  RegisteredForEvent,
-  EventAttendanceMark,
-  EndEventRegistration,
-  RSVPForEvent,
+  RegisteredForEvent
 } from "../interfaces/IdexerType";
-import {hexToAscii} from "../utils/tohexAscii"
+import * as EventsService from "../services/eventsService";
+import { hexToAscii } from "../utils/tohexAscii";
 
 
 export async function handleNewEventAdded(event: any) {
@@ -40,4 +37,34 @@ export async function handleNewEventAdded(event: any) {
   }
   
   await EventsService.createEventFromIndexer(eventDetails);
+}
+
+export async function handleRegisteredForEvent(event: any) {
+
+  // RegisteredForEvent
+  const data = event.data;
+
+  const registeredForEvent: RegisteredForEvent = {
+    eventId: parseInt(
+      uint256
+        .uint256ToBN({
+          low: FieldElement.toBigInt(data[0]),
+          high: FieldElement.toBigInt(data[1]),
+        })
+        .toString()
+    ),
+    emailAddress: hexToAscii(FieldElement.toHex(data[2]).toString()),
+    userAddress: FieldElement.toHex(data[3]).toString(),
+  };
+
+  console.log(registeredForEvent);
+
+  const hasRegistered = await EventsService.hasUsserRegisteredforEvent(registeredForEvent.eventId, registeredForEvent.userAddress)
+  if (hasRegistered) {
+    console.log("User has already registered for the event");
+    return;
+  }
+  // register_for_event
+  await EventsService.registerforEventOnChain(registeredForEvent)
+ 
 }
