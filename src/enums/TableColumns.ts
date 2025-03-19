@@ -33,6 +33,14 @@ export enum EventColumns {
   EVENT_IMAGE = "event_image",
 }
 
+export enum EventRegistrationColumns {
+  UUID = "event_registration_uuid",
+  EVENT_ID = "event_id",
+  EMAIL_ADDRESS = "email_address",
+  USER_ADDRESS = "user_address",
+  IS_ACTIVE = "is_active",
+}
+
 
 export enum UserColumns {
   UUID = "user_uuid",
