@@ -68,3 +68,32 @@ export async function handleRegisteredForEvent(event: any) {
   await EventsService.registerforEventOnChain(registeredForEvent)
  
 }
+
+
+export async function handleEndEventRegistration(event) {
+  // EndEventRegistration
+  const data = event.data;
+
+  const endEventRegistration = {
+    eventId: parseInt(
+      uint256
+        .uint256ToBN({
+          low: FieldElement.toBigInt(data[0]),
+          high: FieldElement.toBigInt(data[1]),
+        })
+        .toString()
+    ),
+    eventName: hexToAscii(FieldElement.toHex(data[2]).toString()),
+    eventOwner: FieldElement.toHex(data[3]).toString(),
+  };
+
+  console.log(endEventRegistration);
+
+  const eventExists = await EventsService.eventByOnchainId(endEventRegistration.eventId);
+  if (!eventExists) {
+    console.log("Event does not exist");
+    return;
+  }
+  await await EventsService.endEventRegistration(endEventRegistration.eventId, endEventRegistration.eventOwner,);
+}
+

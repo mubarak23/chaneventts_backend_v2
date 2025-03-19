@@ -12,9 +12,9 @@ export interface RegisteredForEvent {
 };
 
 export interface EndEventRegistration {
-  event_id: Number,
-    event_name: String,
-    event_owner: String,
+  eventId: Number,
+    eventName: String,
+    eventOwner: String,
 };
 
 export interface RSVPForEvent {

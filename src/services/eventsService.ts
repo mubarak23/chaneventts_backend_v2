@@ -58,6 +58,21 @@ export const eventByOnchainId = async (eventId: Number): Promise<Events | null >
   return true;
 }
 
+  export const endEventRegistration = async (eventId: Number, eventOwner: string): Promise<boolean> => {
+  const connection = await getFreshConnection()
+  const eventRepo = connection.getRepository(Events)
+  
+  await eventRepo
+  .createQueryBuilder()
+  .update(Events)
+  .set({
+    openForRegistration: false
+  })
+  .where({ eventOnchainId: eventId, eventOwner })
+  .execute();
+
+  return true;
+}
 
 export const createEventFromIndexer = async (payload: any): Promise<Events> => {
   try {
