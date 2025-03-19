@@ -26,7 +26,7 @@ export const saveNewEvent = async (payload: IEventData): Promise<Events> => {
   }
 };
 
-export const eventByOnchainId = async (eventId: number): Promise<Events | null > => {
+export const eventByOnchainId = async (eventId: Number): Promise<Events | null > => {
     const connection = await getFreshConnection();
     const eventRepo = connection.getRepository(Events);
     const event = await eventRepo.findOne({
@@ -38,7 +38,7 @@ export const eventByOnchainId = async (eventId: number): Promise<Events | null >
     return event
   }
 
-  export const updateEventWithOnChainData = async (eventId: number, eventData: any): Promise<boolean> => {
+  export const updateEventWithOnChainData = async (eventId: Number, eventData: any): Promise<boolean> => {
   const connection = await getFreshConnection()
   const eventRepo = connection.getRepository(Events)
   
