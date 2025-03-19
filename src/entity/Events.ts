@@ -83,5 +83,19 @@ initialize(name: string, description: string, eventEmail: string, location: stri
     this.createdAt = now;
     return this
   }
+
+  initializeEventOnchain(name: string, description: string, location: string,
+   eventOwner: string, eventOnchainId: number 
+  ){
+    const now = utcNow();
+    this.uuid = uuidv4();
+    this.name = name;
+    this.description = description;
+    this.location = location,
+    this.eventOwner = eventOwner,
+    this.eventOnchainId = eventOnchainId,
+    this.createdAt = now;
+    return this
+  }
 }
 
