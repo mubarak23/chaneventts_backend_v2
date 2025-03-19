@@ -39,6 +39,19 @@ export const eventByOnchainId = async (eventId: Number): Promise<Events | null >
     return event
   }
 
+  export const isEventOpenForRegistration = async (eventId: Number): Promise<Boolean> => {
+    const connection = await getFreshConnection();
+    const eventRepo = connection.getRepository(Events);
+    const event = await eventRepo.findOne({
+      where: {eventOnchainId: eventId}
+    })
+    if(event.openForRegistration){
+      return true
+    }
+    return false
+  }
+
+
   export const updateEventWithOnChainData = async (eventId: Number, eventData: any): Promise<boolean> => {
   const connection = await getFreshConnection()
   const eventRepo = connection.getRepository(Events)

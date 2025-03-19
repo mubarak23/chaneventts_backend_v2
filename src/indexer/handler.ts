@@ -57,6 +57,13 @@ export async function handleRegisteredForEvent(event: any) {
     userAddress: FieldElement.toHex(data[3]).toString(),
   };
 
+  // check if event is open for registration 
+
+  const isEventOpenForRegistration = await EventsService.isEventOpenForRegistration(registeredForEvent.eventId);
+  if (!isEventOpenForRegistration) {
+    console.log("event is closed for registration");
+    return;
+  }
   console.log(registeredForEvent);
 
   const hasRegistered = await EventsService.hasUsserRegisteredforEvent(registeredForEvent.eventId, registeredForEvent.userAddress)
