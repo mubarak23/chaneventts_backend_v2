@@ -18,11 +18,11 @@ export interface EndEventRegistration {
 };
 
 export interface RSVPForEvent {
-    event_id: Number,
-    attendee_address: String,
+    eventId: Number,
+    attendeeAddress: String,
 };
 
 export interface EventAttendanceMark {
-    event_id: Number,
-    user_address: String,
+    eventId: Number,
+    attendeeAddress: String,
 };

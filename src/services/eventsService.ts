@@ -1,6 +1,8 @@
 import { getFreshConnection } from "../db";
+import { EventAttendees } from "../entity/EventAttendance";
 import { EventRegistration } from "../entity/EventRegistration";
 import { Events } from "../entity/Events";
+import { RsvpEvent } from "../entity/RsvpEvent";
 import { IEventData } from "../interfaces/IEventData";
 
 export const saveNewEvent = async (payload: IEventData): Promise<Events> => {
@@ -51,8 +53,64 @@ export const eventByOnchainId = async (eventId: Number): Promise<Events | null >
     return false
   }
 
+    export const isRSVPForEvent = async (eventId: Number, attendeeAddress: String): Promise<Boolean> => {
+    const connection = await getFreshConnection();
+    const resvpEventRepo = connection.getRepository(RsvpEvent);
+    const hasRsvpEvent = await resvpEventRepo.findOne({
+      where: {eventId, attendeeAddress}
+    })
+    if(hasRsvpEvent){
+      return true
+    }
+    return false
+  }
 
-  export const updateEventWithOnChainData = async (eventId: Number, eventData: any): Promise<boolean> => {
+  export const RSVPForEvent = async (payload: any): Promise<RsvpEvent> => {
+  try {
+    const connection = await getFreshConnection();
+    const rsvpEventRepo = connection.getRepository(RsvpEvent);
+
+    const newRsvpEvent = new RsvpEvent();
+    newRsvpEvent.initialize(
+      payload.evntId,
+      payload.attendeeAddress
+    );
+    return await rsvpEventRepo.save(newRsvpEvent);
+  } catch (error) {
+    throw error;
+  }
+};
+
+  // EventAttendees
+      export const isEventAttendee = async (eventId: Number, attendeeAddress: String): Promise<Boolean> => {
+    const connection = await getFreshConnection();
+    const eventAttendeesRepo = connection.getRepository(EventAttendees);
+    const hasEventAttendee = await eventAttendeesRepo.findOne({
+      where: {eventId, attendeeAddress}
+    })
+    if(hasEventAttendee){
+      return true
+    }
+    return false
+  }
+
+  export const markeventAttendance = async (payload: any): Promise<EventAttendees> => {
+  try {
+    const connection = await getFreshConnection();
+    const eventAttendeesRepo = connection.getRepository(EventAttendees);
+
+    const MarkEventAttenance = new EventAttendees();
+    MarkEventAttenance.initialize(
+      payload.evntId,
+      payload.attendeeAddress
+    );
+    return await eventAttendeesRepo.save(MarkEventAttenance);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateEventWithOnChainData = async (eventId: Number, eventData: any): Promise<boolean> => {
   const connection = await getFreshConnection()
   const eventRepo = connection.getRepository(Events)
   

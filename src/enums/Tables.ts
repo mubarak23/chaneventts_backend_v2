@@ -3,7 +3,8 @@ enum Tables {
   USERS = "users",
   EVENTS = "events",
   EVENT_REGISTRATIONS = "event_registrations",
-
+  RSVP_EVENT = "rsvp_event",
+  EVENT_ATTENDEES = "event_attendees",
   SMS_SEND_LOGS = "sms_send_logs",
   CRON_RUNS = "cron_runs",
 
