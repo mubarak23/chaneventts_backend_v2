@@ -1,6 +1,7 @@
 import { getFreshConnection } from "../db";
 import { EventRegistration } from "../entity/EventRegistration";
 import { Events } from "../entity/Events";
+import { RsvpEvent } from "../entity/RsvpEvent";
 import { IEventData } from "../interfaces/IEventData";
 
 export const saveNewEvent = async (payload: IEventData): Promise<Events> => {
@@ -50,6 +51,36 @@ export const eventByOnchainId = async (eventId: Number): Promise<Events | null >
     }
     return false
   }
+
+    export const isRSVPForEvent = async (eventId: Number, attendeeAddress: String): Promise<Boolean> => {
+    const connection = await getFreshConnection();
+    const resvpEventRepo = connection.getRepository(RsvpEvent);
+    const hasRsvpEvent = await resvpEventRepo.findOne({
+      where: {eventId, attendeeAddress}
+    })
+    if(hasRsvpEvent){
+      return true
+    }
+    return false
+  }
+
+  export const RSVPForEvent = async (payload: any): Promise<RsvpEvent> => {
+  try {
+    const connection = await getFreshConnection();
+    const rsvpEventRepo = connection.getRepository(RsvpEvent);
+
+    const newRsvpEvent = new RsvpEvent();
+    newRsvpEvent.initialize(
+      payload.evntId,
+      payload.attendeeAddress
+    );
+    return await rsvpEventRepo.save(newRsvpEvent);
+  } catch (error) {
+    throw error;
+  }
+};
+
+  // RsvpEvent
 
 
   export const updateEventWithOnChainData = async (eventId: Number, eventData: any): Promise<boolean> => {

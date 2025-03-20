@@ -2,8 +2,9 @@ import { FieldElement } from "@apibara/starknet";
 import { uint256 } from "starknet";
 import {
   NewEventAdded,
-  RegisteredForEvent
-} from "../interfaces/IdexerType";
+  RegisteredForEvent,
+  RSVPForEvent
+} from "../interfaces/IndexerType";
 import * as EventsService from "../services/eventsService";
 import { hexToAscii } from "../utils/tohexAscii";
 
@@ -77,7 +78,7 @@ export async function handleRegisteredForEvent(event: any) {
 }
 
 
-export async function handleEndEventRegistration(event) {
+export async function handleEndEventRegistration(event: any) {
   // EndEventRegistration
   const data = event.data;
 
@@ -104,3 +105,30 @@ export async function handleEndEventRegistration(event) {
   await await EventsService.endEventRegistration(endEventRegistration.eventId, endEventRegistration.eventOwner,);
 }
 
+
+export async function handleRSVPForEvent(event: any) {
+  // RSVPForEvent
+  const data = event.data;
+
+  const rsvpForEvent: RSVPForEvent = {
+    eventId: parseInt(
+      uint256
+        .uint256ToBN({
+          low: FieldElement.toBigInt(data[0]),
+          high: FieldElement.toBigInt(data[1]),
+        })
+        .toString()
+    ),
+    attendeeAddress: FieldElement.toHex(data[2]).toString(),
+  };
+
+  console.log(rsvpForEvent);
+
+  const hasRSVPed = await EventsService.isRSVPForEvent(rsvpForEvent.eventId, rsvpForEvent.attendeeAddress)
+  if (hasRSVPed) {
+    console.log("User has already RSVPed");
+    return;
+  }
+  return EventsService.RSVPForEvent(rsvpForEvent);
+  
+}

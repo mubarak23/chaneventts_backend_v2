@@ -41,6 +41,13 @@ export enum EventRegistrationColumns {
   IS_ACTIVE = "is_active",
 }
 
+export enum RsvpEventColumns {
+  UUID = "event_registration_uuid",
+  EVENT_ID = "event_id",
+  ATTENDEE_ADDRESS = "attendee_address",
+}
+
+
 
 export enum UserColumns {
   UUID = "user_uuid",

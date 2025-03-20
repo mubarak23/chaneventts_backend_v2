@@ -18,8 +18,8 @@ export interface EndEventRegistration {
 };
 
 export interface RSVPForEvent {
-    event_id: Number,
-    attendee_address: String,
+    eventId: Number,
+    attendeeAddress: String,
 };
 
 export interface EventAttendanceMark {
