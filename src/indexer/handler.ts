@@ -132,3 +132,29 @@ export async function handleRSVPForEvent(event: any) {
   return EventsService.RSVPForEvent(rsvpForEvent);
   
 }
+
+export async function handleEventAttendanceMark(event: any) {
+  // EventAttendanceMark
+  const data = event.data;
+
+  const eventAttendanceMark = {
+    eventId: parseInt(
+      uint256
+        .uint256ToBN({
+          low: FieldElement.toBigInt(data[0]),
+          high: FieldElement.toBigInt(data[1]),
+        })
+        .toString()
+    ),
+    userAddress: FieldElement.toHex(data[2]).toString(),
+  };
+
+  console.log(eventAttendanceMark);
+
+  const hasMarkedAttendance = await EventsService.isEventAttendee(eventAttendanceMark.eventId, eventAttendanceMark.userAddress)
+  if (hasMarkedAttendance) {
+    console.log("User has already marked attendance");
+    return;
+  }
+  return EventsService.markeventAttendance(eventAttendanceMark);
+}

@@ -1,4 +1,5 @@
 import { getFreshConnection } from "../db";
+import { EventAttendees } from "../entity/EventAttendance";
 import { EventRegistration } from "../entity/EventRegistration";
 import { Events } from "../entity/Events";
 import { RsvpEvent } from "../entity/RsvpEvent";
@@ -80,10 +81,36 @@ export const eventByOnchainId = async (eventId: Number): Promise<Events | null >
   }
 };
 
-  // RsvpEvent
+  // EventAttendees
+      export const isEventAttendee = async (eventId: Number, attendeeAddress: String): Promise<Boolean> => {
+    const connection = await getFreshConnection();
+    const eventAttendeesRepo = connection.getRepository(EventAttendees);
+    const hasEventAttendee = await eventAttendeesRepo.findOne({
+      where: {eventId, attendeeAddress}
+    })
+    if(hasEventAttendee){
+      return true
+    }
+    return false
+  }
 
+  export const markeventAttendance = async (payload: any): Promise<EventAttendees> => {
+  try {
+    const connection = await getFreshConnection();
+    const eventAttendeesRepo = connection.getRepository(EventAttendees);
 
-  export const updateEventWithOnChainData = async (eventId: Number, eventData: any): Promise<boolean> => {
+    const MarkEventAttenance = new EventAttendees();
+    MarkEventAttenance.initialize(
+      payload.evntId,
+      payload.attendeeAddress
+    );
+    return await eventAttendeesRepo.save(MarkEventAttenance);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateEventWithOnChainData = async (eventId: Number, eventData: any): Promise<boolean> => {
   const connection = await getFreshConnection()
   const eventRepo = connection.getRepository(Events)
   

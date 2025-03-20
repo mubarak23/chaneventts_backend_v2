@@ -5,10 +5,11 @@ import {
 } from "@apibara/starknet";
 import { eventsIndexers } from "../enums/EventIndexer";
 import {
+  handleEndEventRegistration,
+  handleEventAttendanceMark,
   handleNewEventAdded,
-  handleRegisteredForEvent
-  // handleEndEventRegistration, handleEventAttendanceMark, handleNewEventAdded,
-  // handleRegisteredForEvent, handleRSVPForEvent
+  handleRegisteredForEvent,
+  handleRSVPForEvent
 } from "./handler";
 
 const client = new StreamClient({
@@ -26,9 +27,9 @@ const filter = Filter.create().withHeader({ weak: true });
 const eventHandlers = {
   [eventsIndexers.NewEventAdded]: handleNewEventAdded,
   [eventsIndexers.RegisteredForEvent]: handleRegisteredForEvent,
-  // [eventsIndexers.EventAttendanceMark]: handleEventAttendanceMark,
-  // [eventsIndexers.EndEventRegistration]: handleEndEventRegistration,
-  // [eventsIndexers.RSVPForEvent]: handleRSVPForEvent,
+  [eventsIndexers.EventAttendanceMark]: handleEventAttendanceMark,
+  [eventsIndexers.EndEventRegistration]: handleEndEventRegistration,
+  [eventsIndexers.RSVPForEvent]: handleRSVPForEvent,
 };
 
 // Add all events to filter

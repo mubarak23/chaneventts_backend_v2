@@ -23,6 +23,6 @@ export interface RSVPForEvent {
 };
 
 export interface EventAttendanceMark {
-    event_id: Number,
-    user_address: String,
+    eventId: Number,
+    attendeeAddress: String,
 };

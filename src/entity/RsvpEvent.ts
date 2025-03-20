@@ -11,7 +11,7 @@ import { utcNow } from "../utils/core";
 import DefualtEntity from "./BaseEntity";
 
 
-@Entity({ name: Tables.ATTENDEE_ADDRESS })
+@Entity({ name: Tables.RSVP_EVENT })
 export class RsvpEvent extends DefualtEntity {
   @Column({ name: RsvpEventColumns.UUID, unique: true })
   uuid: string;

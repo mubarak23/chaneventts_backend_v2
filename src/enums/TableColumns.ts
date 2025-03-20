@@ -48,6 +48,13 @@ export enum RsvpEventColumns {
 }
 
 
+export enum EventAttendanceColumns {
+  UUID = "event_registration_uuid",
+  EVENT_ID = "event_id",
+  ATTENDEE_ADDRESS = "attendee_address",
+}
+
+
 
 export enum UserColumns {
   UUID = "user_uuid",
