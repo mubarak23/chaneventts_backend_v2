@@ -1,9 +1,11 @@
 import { getFreshConnection } from "../db";
 import { EventAttendees } from "../entity/EventAttendance";
+import { EventNFT } from "../entity/EventNft";
 import { EventRegistration } from "../entity/EventRegistration";
 import { Events } from "../entity/Events";
 import { RsvpEvent } from "../entity/RsvpEvent";
 import { IEventData } from "../interfaces/IEventData";
+
 
 export const saveNewEvent = async (payload: IEventData): Promise<Events> => {
   try {
@@ -195,3 +197,31 @@ export const hasUsserRegisteredforEvent = async (eventId: Number, userAddress: S
   }
 
 
+  export const nftForEventAddedAlready = async (eventId: Number, userAddress: String): Promise<EventNFT | null > => {
+    const connection = await getFreshConnection();
+    const eventNFTRepo = connection.getRepository(EventNFT);
+    const eventNft = await eventNFTRepo.findOne({
+      where: {eventId, userAddress}
+    })
+    if(!eventNft){
+      return null;
+    }
+    return eventNft
+  }
+
+export const addNftForEvent = async (payload: any): Promise<EventNFT> => {
+  try {
+    const connection = await getFreshConnection();
+    const eventNftRepo = connection.getRepository(EventNFT);
+
+    const newNFTForEvent= new EventNFT();
+    newNFTForEvent.initialize(
+      payload.eventId,
+      payload.userAddress,
+      payload.nft
+    );
+    return await eventNftRepo.save(newNFTForEvent);
+  } catch (error) {
+    throw error;
+  }
+};

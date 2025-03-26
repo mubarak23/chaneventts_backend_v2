@@ -54,6 +54,13 @@ export enum EventAttendanceColumns {
   ATTENDEE_ADDRESS = "attendee_address",
 }
 
+export enum EvenNftColumns {
+  UUID = "event_registration_uuid",
+  EVENT_ID = "event_id",
+  USER_ADDRESS = "attendee_address",
+  NFT = "nft"
+}
+
 
 
 export enum UserColumns {
