@@ -3,5 +3,6 @@ export const eventsIndexers = {
     RegisteredForEvent: "0x2",
     EventAttendanceMark: "0x3",
     EndEventRegistration: "0x4",
-    RSVPForEvent: "0x5"
+    RSVPForEvent: "0x5",
+    EventNFT: "0x6"
 };

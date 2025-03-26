@@ -9,6 +9,7 @@ import {
   handleEventAttendanceMark,
   handleNewEventAdded,
   handleRegisteredForEvent,
+  handleRegisteredForEventNft,
   handleRSVPForEvent
 } from "./handler";
 
@@ -30,6 +31,7 @@ const eventHandlers = {
   [eventsIndexers.EventAttendanceMark]: handleEventAttendanceMark,
   [eventsIndexers.EndEventRegistration]: handleEndEventRegistration,
   [eventsIndexers.RSVPForEvent]: handleRSVPForEvent,
+  [eventsIndexers.EventNFT]: handleRegisteredForEventNft
 };
 
 // Add all events to filter

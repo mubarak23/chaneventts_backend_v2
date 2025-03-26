@@ -26,3 +26,9 @@ export interface EventAttendanceMark {
     eventId: Number,
     attendeeAddress: String,
 };
+
+export interface EventNFTData {
+    eventId: Number,
+    userAddress: String,
+    nft: String
+};

@@ -3,7 +3,8 @@ import { uint256 } from "starknet";
 import {
   NewEventAdded,
   RegisteredForEvent,
-  RSVPForEvent
+  RSVPForEvent,
+  EventNFTData
 } from "../interfaces/IndexerType";
 import * as EventsService from "../services/eventsService";
 import { hexToAscii } from "../utils/tohexAscii";
@@ -158,3 +159,32 @@ export async function handleEventAttendanceMark(event: any) {
   }
   return EventsService.markeventAttendance(eventAttendanceMark);
 }
+
+export async function handleRegisteredForEventNft(event: any) {
+
+  const data = event.data;
+
+  const eventNFT: EventNFTData = {
+    eventId: parseInt(
+      uint256
+        .uint256ToBN({
+          low: FieldElement.toBigInt(data[0]),
+          high: FieldElement.toBigInt(data[1]),
+        })
+        .toString()
+    ),
+    userAddress: FieldElement.toHex(data[3]).toString(),
+    nft: FieldElement.toHex(data[4]).toString(),
+  };
+
+  const isNftAddedForEvent = await EventsService.nftForEventAddedAlready(eventNFT.eventId, eventNFT.userAddress);
+  if (!isNftAddedForEvent) {
+    console.log("event is closed for registration");
+    return;
+  }
+  console.log(isNftAddedForEvent);
+  
+  await EventsService.addNftForEvent(eventNFT)
+ 
+}
+
